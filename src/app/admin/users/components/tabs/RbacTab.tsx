@@ -65,12 +65,29 @@ export function RbacTab() {
     }
   }, [])
 
-  const openRoleForm = useCallback((role?: Role) => {
-    setRoleFormModal({ isOpen: true, mode: role ? 'edit' : 'create', data: role })
+  const openRoleModal = useCallback((role?: Role) => {
+    if (role) {
+      setRoleModal({
+        isOpen: true,
+        mode: 'role-edit',
+        data: {
+          id: role.id,
+          name: role.name,
+          description: role.description,
+          permissions: role.permissions,
+        }
+      })
+    } else {
+      setRoleModal({
+        isOpen: true,
+        mode: 'role-create',
+        data: { name: '', description: '', permissions: [] }
+      })
+    }
   }, [])
 
-  const closeRoleForm = useCallback(() => {
-    setRoleFormModal({ isOpen: false, mode: 'create', data: undefined })
+  const closeRoleModal = useCallback(() => {
+    setRoleModal({ isOpen: false, mode: 'role-create', data: undefined })
   }, [])
 
   const handleDeleteRole = useCallback(async (roleId: string) => {
