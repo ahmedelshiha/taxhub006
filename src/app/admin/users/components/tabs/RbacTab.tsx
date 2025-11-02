@@ -147,7 +147,7 @@ export function RbacTab() {
               <h3 className="text-lg font-semibold text-gray-900">Roles</h3>
               <p className="text-sm text-gray-500 mt-1">Create and manage roles</p>
             </div>
-            <Button onClick={() => openRoleForm()} className="gap-2">
+            <Button onClick={() => openRoleModal()} className="gap-2">
               <Plus className="w-4 h-4" />
               New Role
             </Button>
@@ -160,7 +160,7 @@ export function RbacTab() {
           ) : roles.length === 0 ? (
             <div className="text-center py-8 border-2 border-dashed rounded-lg">
               <p className="text-gray-500">No roles created yet</p>
-              <Button onClick={() => openRoleForm()} variant="ghost" className="mt-2">
+              <Button onClick={() => openRoleModal()} variant="ghost" className="mt-2">
                 Create your first role
               </Button>
             </div>
@@ -179,7 +179,7 @@ export function RbacTab() {
                       </div>
                     </div>
                     <div className="flex gap-1">
-                      <Button variant="ghost" size="sm" onClick={() => openRoleForm(role)}>
+                      <Button variant="ghost" size="sm" onClick={() => openRoleModal(role)}>
                         <Edit3 className="w-4 h-4" />
                       </Button>
                       <Button variant="ghost" size="sm" onClick={() => handleDeleteRole(role.id)}>
