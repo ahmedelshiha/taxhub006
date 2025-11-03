@@ -2,13 +2,14 @@
 
 import StandardPage from "./StandardPage"
 import DataTable from "@/components/dashboard/DataTable"
+import VirtualizedDataTable from "@/components/dashboard/VirtualizedDataTable"
 import AdvancedDataTable from "@/components/dashboard/tables/AdvancedDataTable"
 import type { ActionItem, Column, FilterConfig, RowAction, TabItem } from "@/types/dashboard"
 import { ReactNode, useMemo, useState } from "react"
 
 /**
  * Props for ListPage, a composition of StandardPage and a table component.
- * Supports both the basic DataTable and AdvancedDataTable (sticky header + pagination).
+ * Supports DataTable (basic), VirtualizedDataTable (large datasets), and AdvancedDataTable (pagination).
  */
 interface ListPageProps<T extends { id?: string | number }> {
   title: string
@@ -39,6 +40,10 @@ interface ListPageProps<T extends { id?: string | number }> {
   renderBulkActions?: (selectedIds: Array<string | number>) => ReactNode
   /** Use AdvancedDataTable (adds sticky header + pagination UI) */
   useAdvancedTable?: boolean
+  /** Use VirtualizedDataTable for large datasets (100+ rows). Default: true */
+  useVirtualization?: boolean
+  /** Virtualization threshold - enable virtual scrolling when rows exceed this count. Default: 100 */
+  virtualizationThreshold?: number
   /** Current page (1-based). If omitted, internal pagination state is used. */
   page?: number
   /** Page size for pagination (AdvancedDataTable only). Defaults to 20. */
