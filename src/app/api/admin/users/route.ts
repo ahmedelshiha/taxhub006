@@ -40,10 +40,33 @@ export const GET = withTenantContext(async (request: Request) => {
       let queryError: Error | null = null
       let queryData: any = null
 
+      // Parse server-side filters
+      const search = (searchParams.get('search') || searchParams.get('q') || '').trim()
+      const roleParam = (searchParams.get('role') || '').trim()
+      const department = (searchParams.get('department') || '').trim()
+      const tier = (searchParams.get('tier') || '').trim()
+
+      // Build Prisma where clause with tenant scoping + filters
+      const where: any = {
+        ...tenantFilter(tenantId),
+        ...(roleParam && roleParam !== 'ALL' ? { role: roleParam as any } : {}),
+        ...(department ? { department } : {}),
+        ...(tier ? { tier } : {}),
+        ...(search
+          ? {
+              OR: [
+                { name: { contains: search, mode: 'insensitive' } },
+                { email: { contains: search, mode: 'insensitive' } },
+                { employeeId: { contains: search, mode: 'insensitive' } }
+              ]
+            }
+          : {})
+      }
+
       const queryPromise = Promise.all([
-        prisma.user.count({ where: tenantFilter(tenantId) }),
+        prisma.user.count({ where }),
         prisma.user.findMany({
-          where: tenantFilter(tenantId),
+          where,
           select: {
             id: true,
             name: true,
