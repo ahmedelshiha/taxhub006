@@ -58,9 +58,12 @@ test.describe('Unified Admin redirects and tabs', () => {
     await expect(page.getByText(/showing.*users/i)).toBeVisible({ timeout: 5000 })
   })
 
-  test('unified Users page shows Entities and RBAC tabs', async ({ page }) => {
+  test('unified Users page shows Dashboard and RBAC tabs (Entities retired)', async ({ page }) => {
     await page.goto('/admin/users')
-    await expect(page.getByRole('tab', { name: /entities/i })).toBeVisible()
+    // Entities tab should be hidden after retirement
+    await expect(page.getByRole('tab', { name: /entities/i })).not.toBeVisible()
+    // Dashboard and RBAC tabs should be visible
+    await expect(page.getByRole('tab', { name: /dashboard/i })).toBeVisible()
     await expect(page.getByRole('tab', { name: /roles & permissions/i })).toBeVisible()
   })
 })
