@@ -821,3 +821,208 @@
 .animate-spin {
   animation: spin 1s linear infinite;
 }
+
+/* ============================================================================
+   PHASE 3: CHART LOADING SKELETON
+   ============================================================================ */
+
+.chart-loading-skeleton {
+  padding: 2rem 1rem;
+  background: var(--muted);
+  border-radius: var(--radius-md);
+  min-height: 200px;
+}
+
+.chart-error {
+  padding: 2rem 1rem;
+  background: var(--destructive-foreground);
+  border: 1px solid var(--destructive);
+  border-radius: var(--radius-md);
+  text-align: center;
+}
+
+/* ============================================================================
+   PHASE 3: RECOMMENDED ACTIONS PANEL
+   ============================================================================ */
+
+.recommendations-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.recommendations-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.recommendations-title {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--foreground);
+  margin: 0;
+}
+
+.recommendations-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.recommendation-item {
+  padding: 0.875rem;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  transition: all 0.2s ease;
+}
+
+.recommendation-item:hover {
+  border-color: var(--primary);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.recommendation-item.impact-critical {
+  border-left: 3px solid var(--destructive);
+}
+
+.recommendation-item.impact-high {
+  border-left: 3px solid #f97316;
+}
+
+.recommendation-item.impact-medium {
+  border-left: 3px solid #eab308;
+}
+
+.recommendation-item.impact-low {
+  border-left: 3px solid #3b82f6;
+}
+
+.recommendation-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.recommendation-icon-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex: 1;
+  min-width: 0;
+}
+
+.recommendation-icon {
+  flex-shrink: 0;
+}
+
+.impact-icon {
+  flex-shrink: 0;
+}
+
+.impact-icon.impact-critical {
+  color: var(--destructive);
+}
+
+.impact-icon.impact-high {
+  color: #f97316;
+}
+
+.impact-icon.impact-medium {
+  color: #eab308;
+}
+
+.impact-icon.impact-low {
+  color: #3b82f6;
+}
+
+.recommendation-title {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--foreground);
+  white-space: normal;
+  word-break: break-word;
+}
+
+.recommendation-dismiss {
+  flex-shrink: 0;
+  padding: 0.25rem;
+  background: none;
+  border: none;
+  color: var(--muted-foreground);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-sm);
+  transition: all 0.2s ease;
+}
+
+.recommendation-dismiss:hover {
+  background: var(--muted);
+  color: var(--foreground);
+}
+
+.recommendation-dismiss:focus {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+.recommendation-description {
+  font-size: 0.8125rem;
+  color: var(--muted-foreground);
+  line-height: 1.4;
+  margin: 0 0 0.75rem 0;
+}
+
+.recommendation-action-btn {
+  width: 100%;
+  height: 2rem;
+  font-size: 0.8125rem;
+  margin-bottom: 0.5rem;
+}
+
+.recommendation-metrics {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  font-size: 0.75rem;
+  color: var(--muted-foreground);
+  padding-top: 0.5rem;
+  border-top: 1px solid var(--border);
+}
+
+.metric {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.recommendations-loading {
+  padding: 2rem 1rem;
+}
+
+.recommendations-empty {
+  text-align: center;
+  padding: 2rem 1rem;
+  color: var(--muted-foreground);
+}
+
+.empty-state-text {
+  margin: 1rem 0;
+  font-size: 0.875rem;
+}
+
+.recommendations-pagination {
+  text-align: center;
+  padding-top: 0.5rem;
+  color: var(--muted-foreground);
+  font-size: 0.75rem;
+}

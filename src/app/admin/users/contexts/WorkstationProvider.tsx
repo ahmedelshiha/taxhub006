@@ -19,7 +19,7 @@ const defaultQuickStats: QuickStatsData = {
 export function WorkstationProvider({ children }: WorkstationProviderProps) {
   const [sidebarOpen, setSidebarOpen] = useState(true)
   const [insightsPanelOpen, setInsightsPanelOpen] = useState(true)
-  const [filters, setFilters] = useState<UserFilters>({})
+  const [filters, setFilters] = useState<UserFilters>({ search: '' })
   const [quickStats, setQuickStats] = useState<QuickStatsData>(defaultQuickStats)
   const [quickStatsRefreshing, setQuickStatsRefreshing] = useState(false)
   const [selectedUserIds, setSelectedUserIds] = useState<Set<string>>(new Set())

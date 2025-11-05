@@ -2,9 +2,9 @@
 
 import { memo, useCallback, useMemo } from 'react'
 import { X } from 'lucide-react'
-import type { WorkstationSidebarProps } from '../../types/workstation'
+import type { WorkstationSidebarProps, UserFilters } from '../../types/workstation'
 import { SavedViewsButtons } from './SavedViewsButtons'
-import { AdvancedUserFilters, type UserFilters as AUserFilters } from '../AdvancedUserFilters'
+import { AdvancedUserFilters } from '../AdvancedUserFilters'
 import './workstation.css'
 
 export const WorkstationSidebar = memo(function WorkstationSidebar({
@@ -36,7 +36,7 @@ export const WorkstationSidebar = memo(function WorkstationSidebar({
         status: undefined,
         department: undefined,
         dateRange: 'all',
-      } as any)
+      })
     }
   }, [onFiltersChange])
 
@@ -62,7 +62,7 @@ export const WorkstationSidebar = memo(function WorkstationSidebar({
    * Map filters from WorkstationIntegrated format to AdvancedUserFilters format
    * Ensures safe extraction of all filter values with proper typing
    */
-  const mappedFilters: AUserFilters = useMemo(() => {
+  const mappedFilters: UserFilters = useMemo(() => {
     const dateRangeStr = getFilterValue(filters?.dateRange)
     return {
       search: getFilterValue(filters?.search) || '',
