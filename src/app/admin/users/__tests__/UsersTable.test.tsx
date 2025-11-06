@@ -121,7 +121,10 @@ describe('UsersTable', () => {
       />
     )
 
-    expect(screen.getByText(/Joined Jan/)).toBeInTheDocument()
+    // Check for first user's creation date
+    expect(screen.getByText(/Jan 1, 2025/)).toBeInTheDocument()
+    // Check for second user's creation date
+    expect(screen.getByText(/Jan 2, 2025/)).toBeInTheDocument()
   })
 
   it('should display user email correctly', () => {
