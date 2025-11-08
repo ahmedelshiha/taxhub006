@@ -98,6 +98,13 @@ export default function UsersTableWrapper({
   return (
     <>
       <div className="flex flex-col h-full overflow-hidden">
+        <DirectoryHeader
+          selectedCount={selectedUserIds.size}
+          onClearSelection={() => onSelectionChange?.(new Set())}
+          onColumnSettings={() => console.log('Open column settings')}
+          onSidebarToggle={() => console.log('Toggle sidebar')}
+        />
+
         <UsersTable
           users={filteredUsers}
           isLoading={context.isLoading || context.usersLoading}
