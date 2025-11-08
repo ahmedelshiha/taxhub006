@@ -5,6 +5,10 @@ import { useUsersContext } from '../../contexts/UsersContextProvider'
 import { UsersTable } from '../UsersTable'
 import { UserItem } from '../../contexts/UsersContextProvider'
 import { UserProfileDialog } from '../UserProfileDialog'
+import DirectoryHeader from './DirectoryHeader'
+import { useUserActions } from '../../hooks/useUserActions'
+import { deleteUser as deleteUserApi } from './api/users'
+import { toast } from 'sonner'
 
 interface UsersTableWrapperProps {
   selectedUserIds?: Set<string>
@@ -86,22 +90,71 @@ export default function UsersTableWrapper({
     context.setProfileOpen(true)
   }, [context])
 
+  const { updateUser, updateUserRole } = useUserActions({ onRefetchUsers: context.refreshUsers, onSuccess: (msg) => toast.success(msg), onError: (err) => toast.error(err) })
+
   const handleRoleChange = useCallback(
     async (userId: string, newRole: UserItem['role']) => {
-      // This would be handled by a mutation
-      console.log(`Changing role for user ${userId} to ${newRole}`)
+      try {
+        await updateUserRole(userId, newRole)
+      } catch (e) {
+        console.error(e)
+      }
     },
-    []
+    [updateUserRole]
   )
+
+  const handleEditInline = useCallback(async (userId: string, field: string, value: any) => {
+    try {
+      await updateUser(userId, { [field]: value })
+    } catch (e) {
+      console.error(e)
+    }
+  }, [updateUser])
+
+  const handleDeleteUser = useCallback(async (userId: string) => {
+    try {
+      await deleteUserApi(userId)
+      toast.success('User deleted')
+      await context.refreshUsers()
+    } catch (e) {
+      console.error(e)
+      toast.error('Failed to delete user')
+    }
+  }, [context])
+
+  const handleResetPassword = useCallback(async (email: string) => {
+    try {
+      const res = await fetch('/api/auth/password/forgot', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email })
+      })
+      if (!res.ok) throw new Error('Failed')
+      toast.success('Password reset email queued')
+    } catch (e) {
+      console.error(e)
+      toast.error('Failed to send reset email')
+    }
+  }, [])
 
   return (
     <>
       <div className="flex flex-col h-full overflow-hidden">
+        <DirectoryHeader
+          selectedCount={selectedUserIds.size}
+          onClearSelection={() => onSelectionChange?.(new Set())}
+          onColumnSettings={() => console.log('Open column settings')}
+          onSidebarToggle={() => console.log('Toggle sidebar')}
+        />
+
         <UsersTable
           users={filteredUsers}
           isLoading={context.isLoading || context.usersLoading}
           onViewProfile={handleViewProfile}
           onRoleChange={handleRoleChange}
+          onEditInline={handleEditInline}
+          onDeleteUser={handleDeleteUser}
+          onResetPassword={handleResetPassword}
           selectedUserIds={selectedUserIds}
           onSelectUser={handleSelectUser}
           onSelectAll={handleSelectAll}

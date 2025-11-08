@@ -1,11 +1,9 @@
 'use client'
 
 import React, { memo, useCallback } from 'react'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Checkbox } from '@/components/ui/checkbox'
 import { UserItem } from '../contexts/UsersContextProvider'
 import UserRow from './UserRow'
-import { usePermissions } from '@/lib/use-permissions'
 import { VirtualScroller } from '@/lib/virtual-scroller'
 
 interface UsersTableProps {
@@ -13,6 +11,9 @@ interface UsersTableProps {
   isLoading?: boolean
   onViewProfile: (user: UserItem) => void
   onRoleChange?: (userId: string, role: UserItem['role']) => Promise<void>
+  onEditInline?: (userId: string, field: string, value: any) => void
+  onDeleteUser?: (userId: string) => Promise<void>
+  onResetPassword?: (email: string) => Promise<void>
   isUpdating?: boolean
   selectedUserIds?: Set<string>
   onSelectUser?: (userId: string, selected: boolean) => void
@@ -21,18 +22,13 @@ interface UsersTableProps {
 
 const UserRowSkeleton = memo(function UserRowSkeleton() {
   return (
-    <div className="grid grid-cols-[40px_2fr_2fr_1fr_1fr_80px] items-center gap-4 px-4 py-3 border-b border-gray-200 bg-white animate-pulse">
+    <div className="grid grid-cols-[40px_minmax(220px,2fr)_minmax(240px,2fr)_120px_110px_120px_80px] items-center gap-4 px-4 py-3 border-b border-gray-200 bg-white animate-pulse">
       <div className="w-5 h-5 bg-gray-200 rounded" />
-      <div className="space-y-2">
-        <div className="h-4 bg-gray-200 rounded w-32" />
-        <div className="h-3 bg-gray-200 rounded w-48" />
-      </div>
-      <div className="space-y-2">
-        <div className="h-3 bg-gray-200 rounded w-40" />
-        <div className="h-3 bg-gray-200 rounded w-32" />
-      </div>
+      <div className="h-4 bg-gray-200 rounded w-32" />
+      <div className="h-3 bg-gray-200 rounded w-48" />
       <div className="h-6 bg-gray-200 rounded w-16" />
       <div className="h-6 bg-gray-200 rounded w-16" />
+      <div className="h-4 bg-gray-200 rounded w-24" />
       <div className="h-8 bg-gray-200 rounded w-8" />
     </div>
   )
@@ -43,6 +39,9 @@ export const UsersTable = memo(function UsersTable({
   isLoading = false,
   onViewProfile,
   onRoleChange,
+  onEditInline: onEditInlineProp,
+  onDeleteUser,
+  onResetPassword,
   isUpdating = false,
   selectedUserIds = new Set(),
   onSelectUser,
@@ -64,10 +63,14 @@ export const UsersTable = memo(function UsersTable({
 
   const handleEditInline = useCallback(
     (userId: string, field: string, value: any) => {
-      // This would be handled by a separate mutation/API call
-      console.log(`Edit user ${userId}, field ${field}:`, value)
+      // Delegate to prop if provided
+      if (onEditInlineProp) {
+        try { onEditInlineProp(userId, field, value) } catch (e) { console.error(e) }
+      } else {
+        console.log(`Edit user ${userId}, field ${field}:`, value)
+      }
     },
-    []
+    [onEditInlineProp]
   )
 
   // Render a single user row with 6-column grid layout
@@ -80,15 +83,18 @@ export const UsersTable = memo(function UsersTable({
         onSelect={handleSelectUser}
         onViewProfile={onViewProfile}
         onEditInline={handleEditInline}
+        onDeleteUser={onDeleteUser}
+        onResetPassword={onResetPassword}
+        onRoleChange={onRoleChange}
       />
     ),
-    [selectedUserIds, handleSelectUser, onViewProfile, handleEditInline]
+    [selectedUserIds, handleSelectUser, onViewProfile, handleEditInline, onDeleteUser, onResetPassword, onRoleChange]
   )
 
   return (
     <div className="flex flex-col h-full bg-white border border-gray-200 rounded-lg">
       {/* Table Header */}
-      <div className="grid grid-cols-[40px_2fr_2fr_1fr_1fr_80px] items-center gap-4 px-4 py-3 border-b border-gray-200 bg-gray-50 flex-shrink-0" role="row" aria-label="Table header">
+      <div className="grid grid-cols-[40px_minmax(220px,2fr)_minmax(240px,2fr)_120px_110px_120px_80px] items-center gap-4 px-4 py-3 border-b border-gray-200 bg-gray-50 flex-shrink-0" role="row" aria-label="Table header">
         <div className="flex items-center justify-center">
           <Checkbox
             checked={allSelected || someSelected}
@@ -101,6 +107,7 @@ export const UsersTable = memo(function UsersTable({
         <div className="text-sm font-semibold text-gray-600">Email</div>
         <div className="text-sm font-semibold text-gray-600">Role</div>
         <div className="text-sm font-semibold text-gray-600">Status</div>
+        <div className="text-sm font-semibold text-gray-600">Date Joined</div>
         <div className="text-sm font-semibold text-gray-600">Actions</div>
       </div>
 

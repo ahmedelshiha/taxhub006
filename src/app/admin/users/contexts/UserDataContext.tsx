@@ -29,7 +29,7 @@ export interface UserItem {
   id: string
   name: string | null
   email: string
-  role: 'ADMIN' | 'TEAM_MEMBER' | 'TEAM_LEAD' | 'STAFF' | 'CLIENT'
+  role: 'ADMIN' | 'TEAM_MEMBER' | 'TEAM_LEAD' | 'STAFF' | 'CLIENT' | 'VIEWER'
   createdAt: string
   lastLoginAt?: string
   isActive?: boolean

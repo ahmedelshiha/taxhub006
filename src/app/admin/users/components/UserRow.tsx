@@ -10,6 +10,10 @@ import {
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu'
 import { UserItem } from '../contexts/UsersContextProvider'
+import { Dialog, DialogContent, DialogHeader, DialogFooter, DialogTitle, DialogDescription } from '@/components/ui/dialog'
+import { AlertDialog, AlertDialogContent, AlertDialogHeader, AlertDialogFooter, AlertDialogTitle, AlertDialogDescription, AlertDialogAction, AlertDialogCancel } from '@/components/ui/alert-dialog'
+import { Button } from '@/components/ui/button'
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select'
 
 interface UserRowProps {
   user: UserItem
@@ -17,6 +21,9 @@ interface UserRowProps {
   onSelect?: (userId: string, selected: boolean) => void
   onViewProfile?: (user: UserItem) => void
   onEditInline?: (userId: string, field: string, value: any) => void
+  onDeleteUser?: (userId: string) => Promise<void>
+  onResetPassword?: (email: string) => Promise<void>
+  onRoleChange?: (userId: string, role: UserItem['role']) => Promise<void>
 }
 
 /**
@@ -34,10 +41,17 @@ const UserRow = memo(function UserRow({
   isSelected = false,
   onSelect,
   onViewProfile,
-  onEditInline
+  onEditInline,
+  onDeleteUser,
+  onResetPassword,
+  onRoleChange
 }: UserRowProps) {
   const [isEditing, setIsEditing] = useState(false)
   const [editValue, setEditValue] = useState(user.name || '')
+  const [isRoleDialogOpen, setIsRoleDialogOpen] = useState(false)
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false)
+  const [selectedRole, setSelectedRole] = useState<UserItem['role']>(user.role || 'VIEWER')
+  const roles = ['ADMIN','EDITOR','VIEWER','TEAM_LEAD','TEAM_MEMBER','STAFF','CLIENT'] as const
 
   const handleSave = useCallback(async () => {
     if (editValue.trim() && editValue !== user.name) {
@@ -60,29 +74,29 @@ const UserRow = memo(function UserRow({
 
   const getRoleColor = (role: string) => {
     const colors: Record<string, string> = {
-      ADMIN: 'bg-red-100 text-red-800',
-      EDITOR: 'bg-blue-100 text-blue-800',
-      VIEWER: 'bg-green-100 text-green-800',
-      TEAM_LEAD: 'bg-purple-100 text-purple-800',
-      TEAM_MEMBER: 'bg-blue-100 text-blue-800',
-      STAFF: 'bg-cyan-100 text-cyan-800',
-      CLIENT: 'bg-emerald-100 text-emerald-800'
+      ADMIN: 'bg-red-50 text-red-700 border border-red-100',
+      EDITOR: 'bg-blue-50 text-blue-700 border border-blue-100',
+      VIEWER: 'bg-emerald-50 text-emerald-700 border border-emerald-100',
+      TEAM_LEAD: 'bg-purple-50 text-purple-700 border border-purple-100',
+      TEAM_MEMBER: 'bg-sky-50 text-sky-700 border border-sky-100',
+      STAFF: 'bg-cyan-50 text-cyan-700 border border-cyan-100',
+      CLIENT: 'bg-emerald-50 text-emerald-700 border border-emerald-100'
     }
-    return colors[role] || 'bg-gray-100 text-gray-800'
+    return colors[role] || 'bg-gray-50 text-gray-800 border border-gray-100'
   }
 
   const getStatusColor = (status: string) => {
     const colors: Record<string, string> = {
-      ACTIVE: 'bg-green-100 text-green-800 border border-green-600',
-      INACTIVE: 'bg-red-100 text-red-800 border border-red-600',
-      SUSPENDED: 'bg-red-100 text-red-800 border border-red-600',
-      PENDING: 'bg-yellow-100 text-yellow-800 border border-yellow-600'
+      ACTIVE: 'bg-green-50 text-green-700 border border-green-200',
+      INACTIVE: 'bg-red-50 text-red-700 border border-red-200',
+      SUSPENDED: 'bg-red-50 text-red-700 border border-red-200',
+      PENDING: 'bg-yellow-50 text-yellow-700 border border-yellow-200'
     }
-    return colors[status] || 'bg-gray-100 text-gray-800 border border-gray-300'
+    return colors[status] || 'bg-gray-50 text-gray-800 border border-gray-100'
   }
 
   return (
-    <div className="grid grid-cols-[40px_2fr_2fr_1fr_1fr_80px] items-center gap-4 px-4 py-3 border-b border-gray-200 hover:bg-gray-50 transition-colors">
+    <div className="grid grid-cols-[40px_minmax(220px,2fr)_minmax(240px,2fr)_120px_110px_120px_80px] items-center gap-4 px-4 py-3 border-b border-gray-200 hover:bg-gray-50 transition-colors">
       {/* Checkbox */}
       <div className="flex items-center justify-center">
         <Checkbox
@@ -94,7 +108,7 @@ const UserRow = memo(function UserRow({
         />
       </div>
 
-      {/* Name + Email */}
+      {/* Name */}
       <div className="flex items-center gap-3">
         <img
           src={user.avatar || 'https://via.placeholder.com/32'}
@@ -114,21 +128,18 @@ const UserRow = memo(function UserRow({
               aria-label="Edit user name"
             />
           ) : (
-            <>
-              <p
-                className="text-sm font-medium text-gray-900 cursor-text hover:underline"
-                onDoubleClick={() => setIsEditing(true)}
-                title="Double-click to edit"
-              >
-                {user.name}
-              </p>
-              <p className="text-xs text-gray-500 truncate">{user.email}</p>
-            </>
+            <p
+              className="text-sm font-medium text-gray-900 cursor-text hover:underline"
+              onDoubleClick={() => setIsEditing(true)}
+              title="Double-click to edit"
+            >
+              {user.name}
+            </p>
           )}
         </div>
       </div>
 
-      {/* Email (duplicate for grid layout) */}
+      {/* Email */}
       <div className="text-sm text-gray-600 truncate hidden md:block">
         {user.email}
       </div>
@@ -155,6 +166,18 @@ const UserRow = memo(function UserRow({
         </span>
       </div>
 
+      {/* Date Joined */}
+      <div className="text-sm text-gray-600 whitespace-nowrap">
+        {(() => {
+          try {
+            const d = new Date(user.createdAt)
+            return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+          } catch {
+            return user.createdAt
+          }
+        })()}
+      </div>
+
       {/* Actions Menu */}
       <div className="flex items-center justify-center">
         <DropdownMenu>
@@ -174,14 +197,77 @@ const UserRow = memo(function UserRow({
             <DropdownMenuItem onClick={() => setIsEditing(true)}>
               Edit Name
             </DropdownMenuItem>
-            <DropdownMenuItem>Reset Password</DropdownMenuItem>
-            <DropdownMenuItem>Change Role</DropdownMenuItem>
-            <DropdownMenuItem className="text-red-600">
+            <DropdownMenuItem onClick={() => onResetPassword?.(user.email || '')}>
+              Reset Password
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => { setSelectedRole(user.role || 'VIEWER'); setIsRoleDialogOpen(true) }}>
+              Change Role
+            </DropdownMenuItem>
+            <DropdownMenuItem className="text-red-600" onClick={() => setIsDeleteDialogOpen(true)}>
               Delete User
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
+
+      {/* Role change dialog */}
+      <Dialog open={isRoleDialogOpen} onOpenChange={setIsRoleDialogOpen}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle>Change Role</DialogTitle>
+            <DialogDescription>Assign a new role to {user.name}</DialogDescription>
+          </DialogHeader>
+
+          <div className="p-4">
+            <Select value={selectedRole} onValueChange={(v) => setSelectedRole(v as any)}>
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Select role" />
+              </SelectTrigger>
+              <SelectContent>
+                {roles.map((r) => (
+                  <SelectItem key={r} value={r}>{r}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setIsRoleDialogOpen(false)}>Cancel</Button>
+            <Button onClick={async () => {
+              try {
+                await onRoleChange?.(user.id, selectedRole)
+                setIsRoleDialogOpen(false)
+              } catch (e) {
+                console.error(e)
+                alert('Failed to change role')
+              }
+            }}>Save</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Delete confirmation */}
+      <AlertDialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Delete user</AlertDialogTitle>
+            <AlertDialogDescription>Are you sure you want to delete {user.name || user.email}? This action cannot be undone.</AlertDialogDescription>
+          </AlertDialogHeader>
+
+          <AlertDialogFooter>
+            <AlertDialogCancel onClick={() => setIsDeleteDialogOpen(false)}>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={async () => {
+              try {
+                await onDeleteUser?.(user.id)
+                setIsDeleteDialogOpen(false)
+              } catch (e) {
+                console.error(e)
+                alert('Failed to delete user')
+              }
+            }}>Delete</AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   )
 })
