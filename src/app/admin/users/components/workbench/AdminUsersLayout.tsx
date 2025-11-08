@@ -34,7 +34,7 @@ import '../styles/admin-users-layout.css'
  * │              │   └──────────────────┘    │
  * ├──────────────┴──────────���─────────────────┤
  * │  Sticky Footer: BulkActionsPanel (if sel) │
- * └────────────────������───────────────────────────┘
+ * └────────────────���────────────────────────────┘
  * 
  * Responsive breakpoints:
  * - Desktop (≥1400px): Sidebar visible, 3-column layout
@@ -58,7 +58,14 @@ export default function AdminUsersLayout() {
 
   const handleAddUser = () => {
     console.log('Add User clicked')
-    toast.info('Add User feature coming soon')
+    setShowCreateUserModal(true)
+  }
+
+  const handleUserCreated = (userId: string) => {
+    toast.success('User created successfully')
+    setShowCreateUserModal(false)
+    // Trigger refresh of users list
+    context.refreshUsers?.()
   }
 
   const handleImport = () => {
