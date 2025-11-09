@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useCallback } from 'react'
+import React, { useState, useCallback, useMemo } from 'react'
 import { Button } from '@/components/ui/button'
 import { X } from 'lucide-react'
 import {
@@ -8,6 +8,9 @@ import {
   CollapsibleTrigger,
   CollapsibleContent
 } from '@/components/ui/collapsible'
+import RoleDistributionChart from '../RoleDistributionChart'
+import UserGrowthChart from '../UserGrowthChart'
+import { useUsersContext } from '../../contexts/UsersContextProvider'
 
 interface AdminSidebarProps {
   onFilterChange?: (filters: Record<string, any>) => void
