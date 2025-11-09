@@ -51,11 +51,11 @@ export const PermissionsTab = memo(function PermissionsTab({ user }: Permissions
   }, [])
 
   const handleRoleChange = useCallback((newRole: string) => {
-    setSelectedRole(newRole)
+    setSelectedRole(newRole as 'ADMIN' | 'CLIENT' | 'TEAM_MEMBER' | 'TEAM_LEAD' | 'STAFF' | 'VIEWER')
     setError(null)
     // Optionally update permissions based on role
     if (ROLE_PERMISSIONS && ROLE_PERMISSIONS[newRole]) {
-      setSelectedPermissions(ROLE_PERMISSIONS[newRole] as Permission[])
+      setSelectedPermissions((ROLE_PERMISSIONS[newRole] as unknown as string[]) as Permission[])
     }
   }, [])
 
