@@ -125,7 +125,7 @@ const RoleDistributionChart = memo(function RoleDistributionChart({
   return (
     <div className="role-distribution-chart-container">
       <h3 className="role-distribution-chart-title">Role Distribution</h3>
-      <div className="role-distribution-chart-body">
+      <div className="role-distribution-chart-body" style={{ height: '200px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <Doughnut data={chartData} options={options} />
       </div>
     </div>
