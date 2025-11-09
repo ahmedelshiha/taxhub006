@@ -100,8 +100,8 @@ export const PermissionsTab = memo(function PermissionsTab({ user }: Permissions
               to: selectedRole,
             },
             permissionChanges: {
-              added: selectedPermissions.filter(p => !user.permissions?.includes(p)),
-              removed: (user.permissions || []).filter(p => !selectedPermissions.includes(p)),
+              added: selectedPermissions.filter(p => !(user.permissions as Permission[])?.includes(p)),
+              removed: ((user.permissions as Permission[]) || []).filter(p => !selectedPermissions.includes(p)),
             },
           }),
         }
