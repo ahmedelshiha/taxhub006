@@ -62,18 +62,18 @@ export function useVirtualScroll({
  * Component wrapper for virtual list rendering
  * Handles item rendering with optimal performance
  */
-export interface VirtualListProps<T> {
-  items: T[]
+export interface VirtualListProps {
+  items: Array<any>
   itemSize: number | ((index: number) => number)
   height: number
   width?: string | number
   overscanCount?: number
-  renderItem: (item: T, index: number, style: React.CSSProperties) => React.ReactNode
+  renderItem: (item: any, index: number, style: React.CSSProperties) => React.ReactNode
   className?: string
   onScroll?: (scrollOffset: number, clientHeight: number) => void
 }
 
-export function VirtualList<T>({
+export function VirtualList({
   items,
   itemSize,
   height,
@@ -82,32 +82,50 @@ export function VirtualList<T>({
   renderItem,
   className,
   onScroll
-}: VirtualListProps<T>) {
+}: VirtualListProps) {
   const listRef = React.useRef<List>(null)
 
-  const handleScroll = useCallback(({ scrollOffset, clientHeight }: {
-    scrollOffset: number
-    clientHeight: number
-  }) => {
-    onScroll?.(scrollOffset, clientHeight)
-  }, [onScroll])
+  const handleScroll = useCallback(
+    (scrollData: { scrollOffset: number; clientHeight: number }) => {
+      onScroll?.(scrollData.scrollOffset, scrollData.clientHeight)
+    },
+    [onScroll]
+  )
+
+  const itemSizeGetter = useCallback(
+    (index: number) => {
+      if (typeof itemSize === 'function') {
+        return itemSize(index)
+      }
+      return itemSize as number
+    },
+    [itemSize]
+  )
 
   return (
-    <List
-      ref={listRef}
-      height={height}
-      itemCount={items.length}
-      itemSize={typeof itemSize === 'function' ? itemSize : () => itemSize as number}
-      width={width}
-      overscanCount={overscanCount}
-      onScroll={handleScroll}
-      className={className}
-    >
-      {({ index, style }) => (
-        <div key={index} style={style}>
-          {renderItem(items[index], index, style)}
-        </div>
-      )}
-    </List>
+    <div>
+      <List
+        ref={listRef}
+        height={height}
+        itemCount={items.length}
+        itemSize={itemSizeGetter}
+        width={width}
+        overscanCount={overscanCount}
+        onScroll={handleScroll}
+        className={className}
+      >
+        {renderRowData}
+      </List>
+    </div>
   )
+
+  // Helper function to render row data
+  function renderRowData(args: { index: number; style: React.CSSProperties }) {
+    const { index, style } = args
+    return (
+      <div key={index} style={style}>
+        {renderItem(items[index], index, style)}
+      </div>
+    )
+  }
 }
