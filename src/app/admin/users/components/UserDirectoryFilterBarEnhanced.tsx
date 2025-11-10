@@ -271,6 +271,20 @@ export function UserDirectoryFilterBarEnhanced({
           </Button>
         )}
 
+        {/* History Button */}
+        <Button
+          onClick={() => setHistoryOpen(!historyOpen)}
+          variant={historyOpen ? 'default' : 'outline'}
+          size="sm"
+          className="text-xs"
+          aria-label="View filter history"
+          title="View recent filters"
+        >
+          {/* Using SVG to avoid additional imports to keep bundle minimal */}
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-3 h-3 mr-1"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-5h-2"/><path d="M12 7v5l3 2"/></svg>
+          History
+        </Button>
+
         {/* Export Button */}
         {showExport && (
           <ExportButton
