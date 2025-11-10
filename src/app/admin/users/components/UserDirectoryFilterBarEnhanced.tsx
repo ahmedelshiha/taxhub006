@@ -118,6 +118,19 @@ export function UserDirectoryFilterBarEnhanced({
     setSuggestionsOpen(false)
   }, [filters, onFiltersChange])
 
+  const handleLoadPreset = useCallback((preset: any) => {
+    onFiltersChange(preset.filters)
+    setPresetsOpen(false)
+  }, [onFiltersChange])
+
+  const handleCreatePreset = useCallback((name: string, filterState: FilterState, description?: string) => {
+    createPreset(name, filterState, description)
+  }, [createPreset])
+
+  const handleApplyQuickFilter = useCallback((filterState: FilterState) => {
+    onFiltersChange(filterState)
+  }, [onFiltersChange])
+
   const handleSelectAllChange = useCallback((checked: boolean) => {
     onSelectAll(checked)
   }, [onSelectAll])
