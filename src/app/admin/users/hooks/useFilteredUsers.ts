@@ -277,6 +277,3 @@ export function useInfiniteFilteredUsers(
     }
   }
 }
-
-// Import React for hooks
-import React from 'react'

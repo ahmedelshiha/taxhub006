@@ -541,7 +541,7 @@ export function ExportSchedulesPanel() {
                     onClick={() => toggleScheduleActive(schedule.id)}
                     title={schedule.isActive ? 'Disable' : 'Enable'}
                   >
-                    <Toggle2 className={`w-4 h-4 ${schedule.isActive ? 'text-green-600' : 'text-gray-400'}`} />
+                    <ToggleRight className={`w-4 h-4 ${schedule.isActive ? 'text-green-600' : 'text-gray-400'}`} />
                   </Button>
 
                   <Button
