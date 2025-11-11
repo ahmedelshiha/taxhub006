@@ -148,7 +148,7 @@ export default function ProfessionalKPIGrid({ stats }: KPIStatsProps) {
                     <Button
                       variant="ghost"
                       size="sm"
-                      className="opacity-0 group-hover:opacity-100 transition-opacity p-1"
+                      className="opacity-0 group-hover:opacity-100 transition-opacity p-0.5"
                       onClick={(e) => {
                         e.stopPropagation()
                         setExpandedKPI(isExpanded ? null : kpi.id)
