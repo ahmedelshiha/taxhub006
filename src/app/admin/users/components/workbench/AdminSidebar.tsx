@@ -36,6 +36,7 @@ export default function AdminSidebar({
     analytics: true,
     activity: false
   })
+  const [isCollapsed, setIsCollapsed] = useState(false)
 
   // Generate role distribution data from users
   const roleDistributionData = useMemo(() => {
