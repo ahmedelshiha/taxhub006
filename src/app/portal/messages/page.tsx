@@ -34,7 +34,7 @@ export default function MessagesPage() {
         <Alert>
           <AlertCircle className="h-4 w-4" />
           <AlertDescription>
-            The Messaging feature is coming soon. You'll be able to send messages and create support tickets here.
+            The Messaging feature is coming soon. You&apos;ll be able to send messages and create support tickets here.
           </AlertDescription>
         </Alert>
 

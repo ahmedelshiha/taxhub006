@@ -58,7 +58,7 @@ export default function EntitySetupStatusPage() {
           <div className="text-center space-y-2">
             <h1 className="text-2xl font-bold">Business Setup</h1>
             <p className="text-gray-600">
-              We're setting up your account and verifying your details
+              We&apos;re setting up your account and verifying your details
             </p>
           </div>
 
