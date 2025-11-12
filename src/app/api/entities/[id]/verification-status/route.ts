@@ -56,7 +56,7 @@ const _api_GET = async (
           entityId,
           status: entity.status === "VERIFIED" ? "VERIFIED_SUCCESS" : "PENDING_VERIFICATION",
           startedAt: entity.createdAt,
-          completedAt: entity.verifiedAt,
+          completedAt: entity.status === "VERIFIED" ? entity.updatedAt : null,
           verifiedRegistrations: [],
         },
       });
