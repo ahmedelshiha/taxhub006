@@ -245,6 +245,40 @@ Mobile and Desktop dashboards deliver identical functions with layout-specific a
   - compliance.view, month_chip.click, card.open, action.assign/snooze/mark, ics.export; dimensions: country, obligation_type.
 - Acceptance criteria
   - Correct due dates per rules; timezone-safe; status transitions auditable; RTL and AR/EN localized strings; accessibility roles/lists correct.
+
+### Phase 2.2 — Features Hub (KYC, Documents, Invoicing, Upload Bill, Attendance, Approvals)
+- Tiles & badges
+  - Each tile shows a count/badge (e.g., KYC steps pending, new docs, invoices due, approvals waiting). Long-press opens quick actions on mobile; right-click menus on desktop.
+- KYC Center
+  - Steps: identity, address, beneficial owners, TRN/registrations, risk questionnaire, documents. Versioned forms per country; audit trail of changes; auto-save drafts.
+  - API: GET/PUT /api/kyc/:entity; POST /api/kyc/:entity/documents; status rollups exposed to dashboard.
+- Documents Quick Access
+  - Shortcuts to recent uploads and starred folders; global search across filename, tags, OCR text; scan-to-upload via mobile camera.
+- Invoicing
+  - Create/send invoices; track statuses (draft/sent/paid/overdue); accept card/bank; store official payment references; KSA/Egypt e-invoice conformity flags.
+- Upload Bill
+  - Camera/gallery import → OCR → vendor/date/amount/VAT extraction; duplicate detection; post to accounting queue with category suggestions.
+- Approvals
+  - Unified queue for invoices, bills, payments, returns, document approvals. Policies per amount/role; sequential or parallel routes; escalation with SLAs.
+- Attendance (optional module)
+  - Simple time punches and leave requests if HR add-on enabled; otherwise tile hidden via feature flag.
+- Telemetry & a11y
+  - feature_tile.view/click, quick_action.use; all tiles keyboard-focusable and announced with counts.
+
+### Phase 2.3 — Services Directory (Search Services)
+- Purpose
+  - Central catalog of firm services (VAT filing, corporate tax, ESR, UBO updates, bookkeeping, advisory) with request/activate flows.
+- UX
+  - Search bar with typeahead; category filters; service cards with price/unit, SLAs, prerequisites, and CTA (Request/Activate/Contact).
+  - Mobile: bottom sheet filters; Desktop: left filter rail + grid; deep links from compliance cards.
+- Data & APIs
+  - services(id, name, country_scope, pricing, prerequisites, feature_flag, description).
+  - GET /api/services?country=…; POST /api/services/:id/request to open a scoped case in Messaging with templated intake checklist.
+- Acceptance
+  - Service availability respects country/role/feature flags; request opens a prefilled case; analytics capture search queries and conversion.
+
+### Desktop Parity for Sections
+- Left sidebar replaces bottom navigation; persistent search in header; keyboard shortcuts; multi-select/bulk actions for Documents, Invoicing, Approvals, and Services.
 - Tasks
   - Action center with upcoming/overdue filings, renewals, and required evidence.
   - Calendar view per entity/country; ICS export and WhatsApp/SMS/email reminders (opt-in).
