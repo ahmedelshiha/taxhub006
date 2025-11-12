@@ -218,7 +218,7 @@ export default function EntitiesPage() {
                 ? "Try adjusting your filters"
                 : "Create your first entity to get started"}
             </p>
-            <PermissionGate permission="USERS_MANAGE">
+            <PermissionGate permission="entity.create">
               <Link href="/admin/entities/new" className="mt-4 inline-block">
                 <Button className="gap-2">
                   <Plus className="w-4 h-4" />
