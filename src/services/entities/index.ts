@@ -82,7 +82,7 @@ export class EntityService {
                   expiresAt: license.expiresAt,
                   economicZoneId: license.economicZoneId,
                   status: license.status || "ACTIVE",
-                  metadata: license.metadata || {},
+                  metadata: (license.metadata || {}) as Prisma.InputJsonValue,
                 },
               })
             )
@@ -100,7 +100,7 @@ export class EntityService {
                   value: reg.value,
                   source: reg.source,
                   status: reg.status || "PENDING",
-                  metadata: reg.metadata || {},
+                  metadata: (reg.metadata || {}) as Prisma.InputJsonValue,
                 },
                 // Note: verifiedAt will be set by verification job
               })
@@ -121,7 +121,7 @@ export class EntityService {
                 type: obligation.type,
                 country: countryCode,
                 frequency: obligation.frequency,
-                ruleConfig: obligation.rules || {},
+                ruleConfig: (obligation.rules || {}) as Prisma.InputJsonValue,
                 active: true,
               },
             })
@@ -134,7 +134,7 @@ export class EntityService {
             entityId: newEntity.id,
             userId,
             action: "CREATE",
-            changes: input,
+            changes: (input as any) as Prisma.InputJsonValue,
           },
         });
 
