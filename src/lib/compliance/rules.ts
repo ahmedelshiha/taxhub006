@@ -188,13 +188,13 @@ export function calculateObligations(
     obligations.push({
       id: `vat-${entity.id}`,
       type: 'VAT',
-      country: entity.country,
+      country,
       description: `VAT filing for ${entity.name}`,
-      dueDate: calculateNextFilingDate(entity.country, 'VAT'),
+      dueDate: calculateNextFilingDate(country, 'VAT'),
       frequency: 'MONTHLY',
       status: 'PENDING',
       daysUntilDue: Math.floor(
-        (calculateNextFilingDate(entity.country, 'VAT').getTime() - Date.now()) / (1000 * 60 * 60 * 24)
+        (calculateNextFilingDate(country, 'VAT').getTime() - Date.now()) / (1000 * 60 * 60 * 24)
       ),
       requiresDocumentation: true,
       automationSupported: false,
@@ -206,13 +206,13 @@ export function calculateObligations(
     obligations.push({
       id: `ct-${entity.id}`,
       type: 'CORPORATE_TAX',
-      country: entity.country,
+      country,
       description: `Corporate tax return for ${entity.name}`,
-      dueDate: calculateNextFilingDate(entity.country, 'CORPORATE_TAX'),
+      dueDate: calculateNextFilingDate(country, 'CORPORATE_TAX'),
       frequency: 'ANNUALLY',
       status: 'PENDING',
       daysUntilDue: Math.floor(
-        (calculateNextFilingDate(entity.country, 'CORPORATE_TAX').getTime() - Date.now()) / (1000 * 60 * 60 * 24)
+        (calculateNextFilingDate(country, 'CORPORATE_TAX').getTime() - Date.now()) / (1000 * 60 * 60 * 24)
       ),
       requiresDocumentation: true,
       automationSupported: false,
@@ -224,13 +224,13 @@ export function calculateObligations(
     obligations.push({
       id: `esr-${entity.id}`,
       type: 'ESR',
-      country: entity.country,
+      country,
       description: 'Economic Substance Report',
-      dueDate: calculateNextFilingDate(entity.country, 'ESR'),
+      dueDate: calculateNextFilingDate(country, 'ESR'),
       frequency: 'ANNUALLY',
       status: 'PENDING',
       daysUntilDue: Math.floor(
-        (calculateNextFilingDate(entity.country, 'ESR').getTime() - Date.now()) / (1000 * 60 * 60 * 24)
+        (calculateNextFilingDate(country, 'ESR').getTime() - Date.now()) / (1000 * 60 * 60 * 24)
       ),
       requiresDocumentation: true,
       automationSupported: false,
@@ -242,13 +242,13 @@ export function calculateObligations(
     obligations.push({
       id: `ubo-${entity.id}`,
       type: 'UBO',
-      country: entity.country,
+      country,
       description: 'Ultimate Beneficial Owner Register Update',
-      dueDate: calculateNextFilingDate(entity.country, 'UBO'),
+      dueDate: calculateNextFilingDate(country, 'UBO'),
       frequency: 'ANNUALLY',
       status: 'PENDING',
       daysUntilDue: Math.floor(
-        (calculateNextFilingDate(entity.country, 'UBO').getTime() - Date.now()) / (1000 * 60 * 60 * 24)
+        (calculateNextFilingDate(country, 'UBO').getTime() - Date.now()) / (1000 * 60 * 60 * 24)
       ),
       requiresDocumentation: true,
       automationSupported: false,
@@ -260,13 +260,13 @@ export function calculateObligations(
     obligations.push({
       id: `zakat-${entity.id}`,
       type: 'ZAKAT',
-      country: entity.country,
+      country,
       description: 'Zakat Return',
-      dueDate: calculateNextFilingDate(entity.country, 'ZAKAT'),
+      dueDate: calculateNextFilingDate(country, 'ZAKAT'),
       frequency: 'ANNUALLY',
       status: 'PENDING',
       daysUntilDue: Math.floor(
-        (calculateNextFilingDate(entity.country, 'ZAKAT').getTime() - Date.now()) / (1000 * 60 * 60 * 24)
+        (calculateNextFilingDate(country, 'ZAKAT').getTime() - Date.now()) / (1000 * 60 * 60 * 24)
       ),
       requiresDocumentation: true,
       automationSupported: false,
