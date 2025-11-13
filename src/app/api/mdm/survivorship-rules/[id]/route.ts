@@ -18,7 +18,7 @@ import { z } from 'zod';
 const UpdateRuleSchema = z.object({
   ruleName: z.string().max(255).optional(),
   description: z.string().optional(),
-  fieldMappings: z.record(z.enum(['MASTER', 'DUPLICATE', 'NEWER', 'OLDER', 'CUSTOM'])).optional(),
+  fieldMappings: z.record(z.enum(['MASTER', 'DUPLICATE', 'NEWER', 'OLDER', 'CUSTOM'], { invalid_type_error: 'Invalid field mapping value' })).optional(),
   customLogic: z.string().optional(),
   priority: z.number().int().optional(),
   isActive: z.boolean().optional(),
