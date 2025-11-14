@@ -178,7 +178,8 @@ const SERVICES: Service[] = [
 export const GET = withTenantContext(
   async (request: NextRequest) => {
     try {
-      const { userId } = requireTenantContext();
+      // userId is optional for public service browsing
+      const context = requireTenantContext();
 
       // Get query parameters
       const search = request.nextUrl.searchParams.get('search');
