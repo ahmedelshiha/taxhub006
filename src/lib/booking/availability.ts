@@ -233,7 +233,7 @@ export async function getAvailabilityForService(params: {
       member = await prisma.teamMember.findUnique({ where: { id: teamMemberId }, select: { id: true, workingHours: true, bookingBuffer: true, maxConcurrentBookings: true, isAvailable: true, timeZone: true } })
       logger.debug('getAvailabilityForService: got teamMember', { teamMemberId, found: !!member })
     } catch (err) {
-      logger.debug('getAvailabilityForService: teamMember fetch error', { teamMemberId }, err instanceof Error ? err : undefined)
+      logger.debug('getAvailabilityForService: teamMember fetch error', { teamMemberId, error: err instanceof Error ? err.message : String(err) })
       member = null
     }
   }
@@ -255,7 +255,7 @@ export async function getAvailabilityForService(params: {
       businessHours = normalizeBusinessHours(member.workingHours as any)
     }
   } catch (e) {
-    logger.debug('getAvailabilityForService: normalize member workingHours error', { teamMemberId }, e instanceof Error ? e : undefined)
+    logger.debug('getAvailabilityForService: normalize member workingHours error', { teamMemberId, error: e instanceof Error ? e.message : String(e) })
     businessHours = undefined
   }
   if (!businessHours) {

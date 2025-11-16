@@ -259,7 +259,7 @@ export class BillsService {
         details: {
           billId: bill.id,
           changes: data,
-        },
+        } as Record<string, any>,
       },
     });
 

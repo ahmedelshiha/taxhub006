@@ -11,7 +11,7 @@ interface UseKYCProgressOptions {
   kycData: KYCData | undefined;
 }
 
-interface UseKYCProgressReturn extends KYCProgress {
+export interface UseKYCProgressReturn extends KYCProgress {
   steps: KYCStep[];
   completedStepIds: string[];
   pendingStepIds: string[];

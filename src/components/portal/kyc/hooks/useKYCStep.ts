@@ -15,7 +15,7 @@ interface UseKYCStepOptions {
   onError?: (error: Error) => void;
 }
 
-interface UseKYCStepReturn {
+export interface UseKYCStepReturn {
   isSubmitting: boolean;
   error: string | null;
   submitStep: (data: any) => Promise<void>;

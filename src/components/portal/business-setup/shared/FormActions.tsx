@@ -28,7 +28,7 @@ export function FormActions({
   if (isMobile) {
     return (
       <SwipeToConfirm
-        onConfirm={onSubmit}
+        onSwipeComplete={onSubmit}
         disabled={isLoading || !isValid}
         text={submitText}
       />

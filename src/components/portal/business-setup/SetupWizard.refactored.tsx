@@ -15,8 +15,8 @@ import type { SetupWizardProps, BusinessType } from "./types/setup";
 
 // Lazy load tab components
 const ExistingBusinessTab = lazy(() => import("./tabs/ExistingBusinessTab.refactored"));
-const NewStartupTab = lazy(() => import("./tabs/NewStartupTab"));
-const IndividualTab = lazy(() => import("./tabs/Individual Tab"));
+const NewStartupTab = lazy(() => import("./tabs/NewStartup"));
+const IndividualTab = lazy(() => import("./tabs/Individual"));
 
 // Tab loading skeleton
 function TabSkeleton() {

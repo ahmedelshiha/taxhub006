@@ -109,7 +109,7 @@ export class TicketsService {
           ...history,
           changedAt: history.changedAt.toISOString(),
         })),
-      })),
+      })) as SupportTicket[],
       total,
     };
   }

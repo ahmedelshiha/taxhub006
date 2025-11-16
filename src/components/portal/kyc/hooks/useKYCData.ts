@@ -14,7 +14,7 @@ interface UseKYCDataOptions {
   revalidateOnFocus?: boolean;
 }
 
-interface UseKYCDataReturn {
+export interface UseKYCDataReturn {
   kycData: KYCData | undefined;
   isLoading: boolean;
   isError: boolean;
