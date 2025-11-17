@@ -106,8 +106,8 @@ const _api_GET = async (request: NextRequest) => {
  * Create new entity
  */
 const _api_POST = async (request: NextRequest) => {
-  let userId: string | null;
-  let tenantId: string | null;
+  let userId: string | null | undefined;
+  let tenantId: string | null | undefined;
 
   try {
     let ctx;
