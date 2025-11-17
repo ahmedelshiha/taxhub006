@@ -81,17 +81,22 @@ const nextConfig = {
 
 const disableSourcemapsOnNetlify = !!process.env.NETLIFY
 
+// Disable Sentry if SENTRY_CLI_SKIP is set or if no valid token is available
+const hasSentryToken = process.env.SENTRY_AUTH_TOKEN && process.env.SENTRY_AUTH_TOKEN !== ''
+const skipSentryInCI = process.env.CI || process.env.VERCEL || process.env.NETLIFY || process.env.SENTRY_CLI_SKIP === 'true'
+const shouldUseSentry = process.env.NODE_ENV === 'production' && hasSentryToken && !skipSentryInCI
+
 const sentryPluginOptions = {
   silent: true,
   tunnelRoute: '/monitoring',
   sourcemaps: {
-    disable: disableSourcemapsOnNetlify,
+    disable: disableSourcemapsOnNetlify || !hasSentryToken,
     deleteSourcemapsAfterUpload: true,
   },
-  disableServerWebpackPlugin: disableSourcemapsOnNetlify,
-  disableClientWebpackPlugin: disableSourcemapsOnNetlify,
+  disableServerWebpackPlugin: disableSourcemapsOnNetlify || !hasSentryToken,
+  disableClientWebpackPlugin: disableSourcemapsOnNetlify || !hasSentryToken,
 }
 
-const configWithSentry = (process.env.NODE_ENV === 'production' && process.env.SENTRY_AUTH_TOKEN && process.env.SENTRY_AUTH_TOKEN !== '') ? withSentryConfig(nextConfig, sentryPluginOptions) : nextConfig
+const configWithSentry = shouldUseSentry ? withSentryConfig(nextConfig, sentryPluginOptions) : nextConfig
 
 export default configWithSentry

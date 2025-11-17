@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { withTenantContext } from '@/lib/api-wrapper'
 import { requireTenantContext } from '@/lib/tenant-utils'
+import type { TenantContext } from '@/lib/tenant-context'
 import prisma from '@/lib/prisma'
 import { logger } from '@/lib/logger'
 import { z } from 'zod'
@@ -12,8 +13,10 @@ const createInvoiceSchema = z.object({
 })
 
 export const GET = withTenantContext(async (request: NextRequest) => {
+  let ctx: TenantContext | undefined;
+
   try {
-    const ctx = requireTenantContext()
+    ctx = requireTenantContext()
 
     if (!ctx.userId || !ctx.tenantId) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
@@ -58,8 +61,8 @@ export const GET = withTenantContext(async (request: NextRequest) => {
 
     logger.error('Error fetching invoices', {
       error: errorMsg,
-      userId: ctx.userId,
-      tenantId: ctx.tenantId,
+      userId: ctx?.userId,
+      tenantId: ctx?.tenantId,
     });
 
     console.error('[INVOICES_API_ERROR] GET failed:', {
@@ -79,8 +82,10 @@ export const GET = withTenantContext(async (request: NextRequest) => {
 })
 
 export const POST = withTenantContext(async (request: NextRequest) => {
+  let ctx: TenantContext | undefined;
+
   try {
-    const ctx = requireTenantContext()
+    ctx = requireTenantContext()
 
     if (!ctx.userId || !ctx.tenantId) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
@@ -124,8 +129,8 @@ export const POST = withTenantContext(async (request: NextRequest) => {
 
     logger.error('Error creating invoice', {
       error: errorMsg,
-      userId: ctx.userId,
-      tenantId: ctx.tenantId,
+      userId: ctx?.userId,
+      tenantId: ctx?.tenantId,
     });
 
     console.error('[INVOICES_API_ERROR] POST failed:', {

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { withTenantContext } from "@/lib/api-wrapper";
 import { requireTenantContext } from "@/lib/tenant-utils";
+import type { TenantContext } from "@/lib/tenant-context";
 import { approvalsService } from "@/lib/services/approvals/approvals-service";
 import { logger } from "@/lib/logger";
 import type { ApprovalFilters } from "@/types/approvals";
@@ -27,8 +28,9 @@ const ApprovalFiltersSchema = z.object({
  * List approvals with filters and pagination
  */
 const _api_GET = async (request: NextRequest) => {
+  let ctx: TenantContext | undefined;
+
   try {
-    let ctx;
     try {
       ctx = requireTenantContext();
     } catch (contextError) {

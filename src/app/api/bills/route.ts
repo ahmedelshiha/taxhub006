@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { withTenantContext } from "@/lib/api-wrapper";
 import { requireTenantContext } from "@/lib/tenant-utils";
+import type { TenantContext } from "@/lib/tenant-context";
 import { billsService } from "@/lib/services/bills/bills-service";
 import { logger } from "@/lib/logger";
 import type { BillFilters } from "@/types/bills";
@@ -40,8 +41,9 @@ const BillCreateSchema = z.object({
  * List bills with filters and pagination
  */
 const _api_GET = async (request: NextRequest) => {
+  let ctx: TenantContext | undefined;
+
   try {
-    let ctx;
     try {
       ctx = requireTenantContext();
     } catch (contextError) {
@@ -112,8 +114,9 @@ const _api_GET = async (request: NextRequest) => {
  * Create new bill
  */
 const _api_POST = async (request: NextRequest) => {
+  let ctx: TenantContext | undefined;
+
   try {
-    let ctx;
     try {
       ctx = requireTenantContext();
     } catch (contextError) {
