@@ -1,7 +1,6 @@
 /**
- * Table Components
- *
- * Reusable table/list components for displaying collections of entities
+ * Shared Table Components
+ * Reusable data table and list components
  */
 
 export { default as SharedDataTable } from './SharedDataTable'

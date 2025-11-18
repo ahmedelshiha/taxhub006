@@ -1,7 +1,6 @@
 /**
- * Notification Components
- *
- * Components for displaying notifications, banners, and alerts across portal and admin
+ * Shared Notification Components
+ * Reusable notification and alert components
  */
 
 export { default as NotificationBanner } from './NotificationBanner'

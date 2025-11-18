@@ -1,7 +1,6 @@
 /**
- * Input & Picker Components
- *
- * Reusable input components and pickers for use across forms
+ * Shared Input Components
+ * Reusable input fields and pickers
  */
 
 export { default as DateRangePicker } from './DateRangePicker'

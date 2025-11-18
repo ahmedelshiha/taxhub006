@@ -1,8 +1,6 @@
 /**
- * Form Components
- *
- * Create/Edit forms for entities (Service, Booking, Task, etc.)
- * Uses react-hook-form and Zod for validation.
+ * Shared Form Components
+ * Reusable forms for creating and editing entities
  */
 
 export { default as ServiceForm } from './ServiceForm'
