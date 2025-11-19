@@ -15,6 +15,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Checkbox } from '@/components/ui/checkbox'
 import { Badge } from '@/components/ui/badge'
 import { usePermissions } from '@/lib/use-permissions'
+import { PERMISSIONS } from '@/lib/permissions'
 import { slugify } from '@/lib/shared/transformers'
 import { AlertCircle, Loader2, Save } from 'lucide-react'
 
@@ -64,7 +65,7 @@ export default function ServiceForm({
   className,
 }: ServiceFormProps) {
   const { can } = usePermissions()
-  const isAdmin = variant === 'admin' && can('service:create')
+  const isAdmin = variant === 'admin' && can(PERMISSIONS.SERVICES_CREATE)
   const isEditing = !!initialData?.id
 
   // Determine which schema to use

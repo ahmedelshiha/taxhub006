@@ -14,6 +14,7 @@ import { Textarea } from '@/components/ui/textarea'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Checkbox } from '@/components/ui/checkbox'
 import { usePermissions } from '@/lib/use-permissions'
+import { PERMISSIONS } from '@/lib/permissions'
 import { AlertCircle, Loader2, Save, CheckCircle2, AlertTriangle } from 'lucide-react'
 
 interface TaskFormProps extends FormComponentProps<Task> {
@@ -61,7 +62,7 @@ export default function TaskForm({
   className,
 }: TaskFormProps) {
   const { can } = usePermissions()
-  const isAdmin = variant === 'admin' && can('task:create')
+  const isAdmin = variant === 'admin' && can(PERMISSIONS.TASKS_CREATE)
   const isEditing = !!initialData?.id
 
   // Determine which schema to use

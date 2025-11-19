@@ -3,6 +3,7 @@
 import React from 'react'
 import { Task } from '@/types/shared/entities/task'
 import { usePermissions } from '@/lib/use-permissions'
+import { PERMISSIONS } from '@/lib/permissions'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
@@ -58,9 +59,9 @@ export default function TaskCard({
   className = '',
 }: TaskCardProps) {
   const { has } = usePermissions()
-  const canEditTask = has('tasks:edit')
-  const canDeleteTask = has('tasks:delete')
-  const canUpdateOwnTask = has('tasks:update-own')
+  const canEditTask = has(PERMISSIONS.TASKS_EDIT)
+  const canDeleteTask = has(PERMISSIONS.TASKS_DELETE)
+  const canUpdateOwnTask = has(PERMISSIONS.TASKS_UPDATE_OWN)
 
   if (!task) return null
 

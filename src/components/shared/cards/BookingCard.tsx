@@ -3,6 +3,7 @@
 import React from 'react'
 import { Booking } from '@/types/shared/entities/booking'
 import { usePermissions } from '@/lib/use-permissions'
+import { PERMISSIONS } from '@/lib/permissions'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
@@ -58,27 +59,31 @@ export default function BookingCard({
   className = '',
 }: BookingCardProps) {
   const { has } = usePermissions()
-  const canEditBooking = has('bookings:edit')
-  const canCancelBooking = has('bookings:cancel')
+  const canEditBooking = has(PERMISSIONS.BOOKINGS_EDIT)
+  const canCancelBooking = has(PERMISSIONS.BOOKINGS_CANCEL)
 
   if (!booking) return null
 
-  const statusColor = {
+  const statusColor: Record<string, string> = {
+    DRAFT: 'bg-gray-100 text-gray-700',
     PENDING: 'bg-yellow-100 text-yellow-800',
     CONFIRMED: 'bg-green-100 text-green-800',
-    COMPLETED: 'bg-blue-100 text-blue-800',
+    IN_PROGRESS: 'bg-blue-100 text-blue-800',
+    COMPLETED: 'bg-emerald-100 text-emerald-800',
     CANCELLED: 'bg-red-100 text-red-800',
     RESCHEDULED: 'bg-purple-100 text-purple-800',
-    'NO_SHOW': 'bg-gray-100 text-gray-800',
+    NO_SHOW: 'bg-orange-100 text-orange-800',
   }
 
-  const statusLabel = {
+  const statusLabel: Record<string, string> = {
+    DRAFT: 'Draft',
     PENDING: 'Pending',
     CONFIRMED: 'Confirmed',
+    IN_PROGRESS: 'In Progress',
     COMPLETED: 'Completed',
     CANCELLED: 'Cancelled',
     RESCHEDULED: 'Rescheduled',
-    'NO_SHOW': 'No Show',
+    NO_SHOW: 'No Show',
   }
 
   // Compact variant - minimal display for lists
@@ -160,7 +165,7 @@ export default function BookingCard({
           <div className="flex items-center gap-2 text-sm text-gray-700">
             <Calendar className="h-4 w-4 flex-shrink-0" />
             <div>
-              <p>{formatDate(scheduledDate, 'full')}</p>
+              <p>{formatDate(scheduledDate, 'long')}</p>
               <p className="text-xs text-gray-500">
                 {scheduledDate.toLocaleTimeString('en-US', {
                   hour: '2-digit',

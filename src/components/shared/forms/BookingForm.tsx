@@ -13,6 +13,7 @@ import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { usePermissions } from '@/lib/use-permissions'
+import { PERMISSIONS } from '@/lib/permissions'
 import { AlertCircle, Loader2, Save, Calendar, Clock } from 'lucide-react'
 
 interface BookingFormProps extends FormComponentProps<Booking> {
@@ -59,7 +60,7 @@ export default function BookingForm({
   className,
 }: BookingFormProps) {
   const { can } = usePermissions()
-  const isAdmin = variant === 'admin' && can('booking:create')
+  const isAdmin = variant === 'admin' && can(PERMISSIONS.BOOKINGS_CREATE)
   const isEditing = !!initialData?.id
 
   // Determine which schema to use

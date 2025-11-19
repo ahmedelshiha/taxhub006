@@ -3,6 +3,7 @@
 import React from 'react'
 import { Service } from '@/types/shared/entities/service'
 import { usePermissions } from '@/lib/use-permissions'
+import { PERMISSIONS } from '@/lib/permissions'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
@@ -54,8 +55,8 @@ export default function ServiceCard({
   className = '',
 }: ServiceCardProps) {
   const { has } = usePermissions()
-  const canEditService = has('services:edit')
-  const canDeleteService = has('services:delete')
+  const canEditService = has(PERMISSIONS.SERVICES_EDIT)
+  const canDeleteService = has(PERMISSIONS.SERVICES_DELETE)
 
   if (!service) return null
 
