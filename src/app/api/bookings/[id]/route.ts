@@ -8,6 +8,7 @@ import { PERMISSIONS, hasPermission } from '@/lib/permissions'
 import { logAudit } from '@/lib/audit'
 import { respond } from '@/lib/api-response'
 import { logger } from '@/lib/logger'
+import { publishBookingUpdated, publishBookingDeleted } from '@/lib/realtime/booking-events'
 
 /**
  * Filter booking fields based on user role and ownership
