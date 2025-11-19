@@ -229,7 +229,6 @@ export default function SharedDataTable<T extends Record<string, any>>({
                 <TableHead className="w-12">
                   <Checkbox
                     checked={data.length > 0 && selectedIds.length === data.length}
-                    indeterminate={selectedIds.length > 0 && selectedIds.length < data.length}
                     onCheckedChange={handleSelectAll}
                   />
                 </TableHead>
