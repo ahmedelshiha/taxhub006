@@ -61,8 +61,8 @@ export default function TaskForm({
   variant = 'admin',
   className,
 }: TaskFormProps) {
-  const { can } = usePermissions()
-  const isAdmin = variant === 'admin' && can(PERMISSIONS.TASKS_CREATE)
+  const { has } = usePermissions()
+  const isAdmin = variant === 'admin' && has(PERMISSIONS.TASKS_CREATE)
   const isEditing = !!initialData?.id
 
   // Determine which schema to use
@@ -74,18 +74,17 @@ export default function TaskForm({
       title: initialData?.title || '',
       description: initialData?.description || '',
       status: initialData?.status || 'OPEN',
-      priority: initialData?.priority || 'MEDIUM',
-      dueAt: initialData?.dueAt ? new Date(initialData.dueAt).toISOString().split('T')[0] : '',
+      priority: initialData?.priority || 'NORMAL',
+      dueDate: initialData?.dueDate ? new Date(initialData.dueDate).toISOString().split('T')[0] : '',
       assigneeId: initialData?.assigneeId || '',
-      parentTaskId: initialData?.parentTaskId || '',
       tags: (initialData?.tags as string[]) || [],
       estimatedHours: initialData?.estimatedHours || undefined,
     },
   })
 
   const onSubmitHandler = async (data: any) => {
-    if (data.dueAt) {
-      data.dueAt = new Date(`${data.dueAt}T00:00:00`)
+    if (data.dueDate) {
+      data.dueDate = new Date(`${data.dueDate}T00:00:00`)
     }
     await onSubmit(data)
   }

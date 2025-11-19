@@ -64,8 +64,8 @@ export default function ServiceForm({
   variant = 'admin',
   className,
 }: ServiceFormProps) {
-  const { can } = usePermissions()
-  const isAdmin = variant === 'admin' && can(PERMISSIONS.SERVICES_CREATE)
+  const { has } = usePermissions()
+  const isAdmin = variant === 'admin' && has(PERMISSIONS.SERVICES_CREATE)
   const isEditing = !!initialData?.id
 
   // Determine which schema to use
