@@ -165,7 +165,7 @@ export default function BookingCard({
           <div className="flex items-center gap-2 text-sm text-gray-700">
             <Calendar className="h-4 w-4 flex-shrink-0" />
             <div>
-              <p>{formatDate(scheduledDate, 'full')}</p>
+              <p>{formatDate(scheduledDate, 'long')}</p>
               <p className="text-xs text-gray-500">
                 {scheduledDate.toLocaleTimeString('en-US', {
                   hour: '2-digit',
