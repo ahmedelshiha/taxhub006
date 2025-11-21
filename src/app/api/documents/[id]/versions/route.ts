@@ -76,7 +76,6 @@ export const GET = withTenantAuth(async (request, context) => {
         action: 'documents:view_versions',
         userId,
         resource: 'Document',
-        resourceId: document.id,
       },
     }).catch(() => {})
 
@@ -195,19 +194,13 @@ export const POST = withTenantAuth(async (request, context) => {
     }).catch(() => {})
 
     // Log audit
-    const auditAction = 'documents:create_version'
     await prisma.auditLog.create({
       data: {
         tenantId,
-        action: auditAction,
-        userId,
-        resource: 'Document',
-        resourceId: document.id,
         action: 'documents:create_version',
-        userId: user.id,
-        resourceType: 'DocumentVersion',
-        resourceId: version.id,
-        details: {
+        userId,
+        resource: 'DocumentVersion',
+        metadata: {
           documentId: params.id,
           versionNumber: newVersionNumber,
           changeDescription,
