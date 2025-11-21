@@ -56,7 +56,7 @@ export class RequestDeduplicator {
     fetchFn: () => Promise<T>
   ): Promise<T> {
     if (this.pendingRequests.has(url)) {
-      return this.pendingRequests.get(url)!
+      return this.pendingRequests.get(url) as Promise<T>
     }
 
     const promise = fetchFn()
