@@ -200,8 +200,9 @@ export default function LocalizationContent() {
       const d = await r.json()
       if (!r.ok) throw new Error(d?.error || 'Failed to load languages')
       setLanguages(d.data || [])
-    } catch (e: any) {
-      console.error('Failed to load languages:', e)
+    } catch (e: unknown) {
+      const error = e instanceof Error ? e.message : String(e)
+      console.error('Failed to load languages:', error)
       throw e
     }
   }

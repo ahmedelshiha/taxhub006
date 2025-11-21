@@ -173,7 +173,7 @@ export default function FinancialSettingsPage() {
   )
 }
 
-function Field({ label, value, onChange, type='text' }: { label: string; value: any; onChange: (v: any)=>void; type?: string }){
+function Field({ label, value, onChange, type='text' }: { label: string; value: unknown; onChange: (v: unknown)=>void; type?: string }){
   return (
     <div>
       <label className="block text-sm font-medium text-gray-700 mb-1">{label}</label>
