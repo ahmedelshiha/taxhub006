@@ -14,10 +14,13 @@ import { z } from 'zod'
  * Supports advanced filtering and sorting
  */
 export const GET = withTenantContext(
-  async (request, { user, tenantId }) => {
+  async (request, { params }) => {
     try {
+      const ctx = requireTenantContext()
+      const { user, tenantId } = ctx
+
       // Verify admin access
-      if (!user.isAdmin) {
+      if (!user?.role !== 'SUPER_ADMIN' && !user?.tenantRole?.includes('ADMIN')) {
         return respond.forbidden('Only administrators can access this endpoint')
       }
 
