@@ -45,8 +45,8 @@ export function TeamEntitySettings({ isLoading = false, isSaving = false, onUpda
     }
   }
 
-  const onChange = (section: string, key: string, value: any) => {
-    setPending((p) => ({ ...p, [section]: { ...(p as any)[section], [key]: value } }))
+  const onChange = (section: string, key: string, value: unknown) => {
+    setPending((p) => ({ ...p, [section]: { ...(p[section] as Record<string, unknown> | undefined), [key]: value } }))
   }
 
   const onSave = async () => {
