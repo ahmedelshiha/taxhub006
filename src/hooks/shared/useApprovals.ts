@@ -3,11 +3,21 @@
 import useSWR, { mutate } from 'swr'
 import { apiFetch } from '@/lib/api'
 
-interface ApprovalFilters {
+export interface ApprovalFilters {
   limit?: number
   offset?: number
   type?: string
   status?: string
+}
+
+export interface UseApprovalsResponse {
+  approvals: any[]
+  total: number
+  hasMore: boolean
+  isLoading: boolean
+  error?: Error
+  pendingCount: number
+  refresh: () => Promise<any>
 }
 
 /**
