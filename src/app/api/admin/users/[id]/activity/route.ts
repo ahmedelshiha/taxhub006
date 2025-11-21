@@ -15,9 +15,12 @@ const FilterSchema = z.object({
  * Get user's activity log (admin view)
  */
 export const GET = withAdminAuth(
-  async (request, { user, tenantId }, { params }) => {
+  async (request, { params }) => {
     try {
-      const { id } = params
+      const ctx = requireTenantContext()
+      const { tenantId } = ctx
+      const actualParams = await params
+      const { id } = actualParams
       const { searchParams } = new URL(request.url)
       const filters = FilterSchema.parse(Object.fromEntries(searchParams))
 
