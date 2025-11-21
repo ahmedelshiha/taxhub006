@@ -16,6 +16,23 @@ import {
   requestDeduplicator,
 } from './api-optimization'
 
+// Re-export from api-optimization for easier imports
+export {
+  performanceTracker,
+  getPerformanceTarget,
+  respondWithOptimization,
+  requestDeduplicator,
+  getCacheHeaders,
+  PERFORMANCE_TARGETS,
+  CACHE_STRATEGIES,
+  COMPRESSION_SETTINGS,
+  optimizeResponse,
+  createPerformanceTracker,
+  createRequestDeduplicator,
+  createPaginationHelper,
+  paginationHelper,
+} from './api-optimization'
+
 /**
  * Wrap an API handler with performance optimizations
  *
@@ -51,15 +68,16 @@ export function withPerformanceOptimization<T>(
         options.deduplicateKey
       ) {
         const deduplicateKey = `${options.deduplicateKey}:${url}`
-        return await requestDeduplicator.deduplicate(deduplicateKey, async () => {
-          const response = await handler(request, context)
-          return recordPerformance(response, startTime, method, endpoint)
+        const response = await requestDeduplicator.deduplicate(deduplicateKey, async () => {
+          const res = await handler(request, context)
+          return recordPerformance(res, startTime, method, endpoint)
         })
+        return response as NextResponse<T>
       }
 
       // Regular handler execution
       const response = await handler(request, context)
-      return recordPerformance(response, startTime, method, endpoint)
+      return recordPerformance(response, startTime, method, endpoint) as NextResponse<T>
     } catch (error) {
       const duration = performance.now() - startTime
       performanceTracker.track(endpoint, method, duration)

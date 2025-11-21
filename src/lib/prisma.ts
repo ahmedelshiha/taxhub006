@@ -197,3 +197,4 @@ const prisma: PrismaClientType = new Proxy(
 ) as unknown as PrismaClientType
 
 export default prisma
+export { prisma }

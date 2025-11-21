@@ -10,6 +10,7 @@ export const PERMISSIONS = {
   TASKS_READ_ALL: 'tasks.read.all',
   TASKS_READ_ASSIGNED: 'tasks.read.assigned',
   TASKS_UPDATE: 'tasks.update',
+  TASKS_EDIT: 'tasks.edit',
   TASKS_DELETE: 'tasks.delete',
   TASKS_ASSIGN: 'tasks.assign',
 
@@ -26,6 +27,7 @@ export const PERMISSIONS = {
   SERVICES_VIEW: 'services.view',
   SERVICES_CREATE: 'services.create',
   SERVICES_EDIT: 'services.edit',
+  SERVICES_UPDATE: 'services.update',
   SERVICES_DELETE: 'services.delete',
   SERVICES_BULK_EDIT: 'services.bulk.edit',
   SERVICES_EXPORT: 'services.export',
@@ -141,6 +143,7 @@ export const PERMISSIONS = {
   BOOKINGS_CREATE: 'bookings.create',
   BOOKINGS_READ_OWN: 'bookings.read.own',
   BOOKINGS_READ_ALL: 'bookings.read.all',
+  BOOKINGS_VIEW: 'bookings.view',
   BOOKINGS_EDIT: 'bookings.edit',
   BOOKINGS_CANCEL: 'bookings.cancel',
   BOOKINGS_RESCHEDULE: 'bookings.reschedule',

@@ -334,3 +334,17 @@ export function withTenantContext(
     }
   }
 }
+
+/**
+ * Alias for withTenantContext with admin requirements
+ * Ensures user is authenticated and enforces admin/superadmin checks
+ */
+export function withAdminAuth(
+  handler: ApiHandler,
+  options: ApiWrapperOptions = {}
+) {
+  return withTenantContext(handler, {
+    ...options,
+    requireAuth: true,
+  })
+}

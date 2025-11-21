@@ -176,8 +176,8 @@ export const GET = withTenantAuth(async (request, { tenantId, user }) => {
         tenantId,
         action: 'documents:list',
         userId: user.id,
-        resourceType: 'Document',
-        details: {
+        resource: 'Document',
+        metadata: {
           count: documents.length,
           total,
           filters: {
